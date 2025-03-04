@@ -22,6 +22,9 @@ public class ProductController {
         if(id==null){
             throw new IllegalArgumentException("product id cannot be null");
         }
+        if(id==1000){
+            throw new IllegalArgumentException("product id cannot be 1000");
+        }
         return productService.getProductById(id);
     }
 
