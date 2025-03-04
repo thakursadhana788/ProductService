@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class FakeStoreProductService {
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public FakeStoreProductService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -48,6 +48,20 @@ public class FakeStoreProductService {
         return products;
     }
 
+    public Product createProduct(String title, String description, String imageUrl, String catTitle){
+        Product response;
+
+        FakeStoreResponseDTO requestBody = new FakeStoreResponseDTO();
+
+        requestBody.setTitle(title);
+        requestBody.setDescription(description);
+        requestBody.setCategory(catTitle);
+        requestBody.setImage(imageUrl);
+
+        FakeStoreResponseDTO fakeStoreResponse=restTemplate.postForObject("https://fakestoreapi.com/products",requestBody,FakeStoreResponseDTO.class);
+        response = convertToProduct(fakeStoreResponse);
+        return response;
+    }
 
     private Product convertToProduct(FakeStoreResponseDTO response) {
         Product product = new Product();

@@ -1,5 +1,6 @@
 package demo.com.productservice.Controller;
 
+import demo.com.productservice.DTO.CreateProductRequestDTO;
 import demo.com.productservice.Model.Product;
 import demo.com.productservice.Service.FakeStoreProductService;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,9 @@ public class ProductController {
     @GetMapping("/{id}")
     // this will help the http Get method to fetch all products using specific id
     public Product getProductById(@PathVariable("id") Integer id){ //PathVariable
-
+        if(id==null){
+            throw new IllegalArgumentException("product id cannot be null");
+        }
         return productService.getProductById(id);
     }
 
@@ -28,8 +31,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public void createProduct(){
-
+    public Product createProduct(@RequestBody CreateProductRequestDTO request){
+        Product product= productService.createProduct(request.getTitle(), request.getDescription(), request.getImageUrl(), request.getCategory().toString());
+        return  product;
     }
 
     @DeleteMapping
